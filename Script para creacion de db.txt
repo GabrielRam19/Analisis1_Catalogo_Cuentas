@@ -1,0 +1,64 @@
+-- 📌 Crear Base de Datos
+CREATE DATABASE ContabilidadDB;
+GO
+USE ContabilidadDB;
+GO
+
+-- 📌 Tabla de Grupos de Cuentas (Activo, Pasivo, etc.)
+CREATE TABLE GrupoCuenta (
+    IdGrupo INT PRIMARY KEY IDENTITY(1,1),
+    NombreGrupo NVARCHAR(100) NOT NULL,
+    Descripcion NVARCHAR(255) NULL
+);
+GO
+
+-- 📌 Tabla de Cuentas Contables
+CREATE TABLE CuentaContable (
+    CodigoCuenta VARCHAR(20) PRIMARY KEY, 
+    NombreCuenta NVARCHAR(255) NOT NULL, 
+    TipoCuenta CHAR(1) NOT NULL CHECK (TipoCuenta IN ('A', 'P', 'I', 'G','C')), 
+    IdGrupo INT NOT NULL, 
+    Estado CHAR(1) NOT NULL DEFAULT 'A' CHECK (Estado IN ('A', 'I')), 
+    FOREIGN KEY (IdGrupo) REFERENCES GrupoCuenta(IdGrupo) ON DELETE CASCADE
+);
+GO
+
+-- 📌 Tabla de Jerarquía de Cuentas (Define la relación Padre-Hijo)
+CREATE TABLE JerarquiaCuenta (
+    IdJerarquia INT PRIMARY KEY IDENTITY(1,1),
+    CodigoCuentaHijo VARCHAR(20) NOT NULL, 
+    CodigoCuentaPadre VARCHAR(20) NOT NULL, 
+    Nivel INT NOT NULL CHECK (Nivel >= 1),
+    FOREIGN KEY (CodigoCuentaHijo) REFERENCES CuentaContable(CodigoCuenta) ON DELETE NO ACTION,
+    FOREIGN KEY (CodigoCuentaPadre) REFERENCES CuentaContable(CodigoCuenta) ON DELETE NO ACTION
+);
+GO
+
+-- 📌 Tabla de Estado Financiero (Asocia cuentas con reportes financieros)
+CREATE TABLE EstadoFinanciero (
+    IdEstadoFinanciero INT PRIMARY KEY IDENTITY(1,1),
+    CodigoCuenta VARCHAR(20) NOT NULL,
+    TipoEstado CHAR(1) NOT NULL CHECK (TipoEstado IN ('B', 'R')), 
+    FOREIGN KEY (CodigoCuenta) REFERENCES CuentaContable(CodigoCuenta) ON DELETE CASCADE
+);
+GO
+
+-- 📌 Tabla de Impuestos Asociados a Cuentas
+CREATE TABLE ImpuestoCuenta (
+    IdImpuesto INT PRIMARY KEY IDENTITY(1,1),
+    CodigoCuenta VARCHAR(20) NOT NULL,
+    Porcentaje DECIMAL(5,2) NOT NULL, 
+    TipoImpuesto CHAR(1) NOT NULL CHECK (TipoImpuesto IN ('V', 'C')), 
+    FOREIGN KEY (CodigoCuenta) REFERENCES CuentaContable(CodigoCuenta) ON DELETE CASCADE
+);
+GO
+
+-- 📌 Tabla de Auditoría de Cambios en Cuentas Contables
+CREATE TABLE AuditoriaCuenta (
+    IdAuditoria INT PRIMARY KEY IDENTITY(1,1),
+    CodigoCuenta VARCHAR(20) NOT NULL,
+    FechaCambio DATETIME DEFAULT GETDATE(),
+    Accion NVARCHAR(50) NOT NULL, 
+    FOREIGN KEY (CodigoCuenta) REFERENCES CuentaContable(CodigoCuenta) ON DELETE CASCADE
+);
+GO
