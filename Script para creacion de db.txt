@@ -62,3 +62,21 @@ CREATE TABLE AuditoriaCuenta (
     FOREIGN KEY (CodigoCuenta) REFERENCES CuentaContable(CodigoCuenta) ON DELETE CASCADE
 );
 GO
+
+-- 📌 Tabla de asientos contables
+CREATE TABLE ContabilidadDB.dbo.Asiento (
+    idAsiento INT PRIMARY KEY IDENTITY(1,1),
+    fecha DATE NOT NULL,
+    descripcion NVARCHAR(255) NOT NULL
+);
+
+-- 📌 Tabla de detalle de asientos contables
+CREATE TABLE ContabilidadDB.dbo.DetalleAsiento (
+    idDetalle INT PRIMARY KEY IDENTITY(1,1),
+    idAsiento INT NOT NULL,
+    CodigoCuenta VARCHAR(20) NOT NULL,
+    debe DECIMAL(18, 2) DEFAULT 0 CHECK (debe >= 0),
+    haber DECIMAL(18, 2) DEFAULT 0 CHECK (haber >= 0),
+    CONSTRAINT FK_DetalleAsiento_Asiento FOREIGN KEY (idAsiento) REFERENCES ContabilidadDB.dbo.Asiento(idAsiento),
+    CONSTRAINT FK_DetalleAsiento_Cuenta FOREIGN KEY (CodigoCuenta) REFERENCES ContabilidadDB.dbo.CuentaContable(CodigoCuenta)
+);
