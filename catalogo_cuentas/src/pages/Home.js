@@ -11,6 +11,9 @@ function Home() {
                     <nav>
                         <ul className="flex space-x-6">
                             <li>
+                                <Link to="/asientos" className="hover:text-gray-300">Asientos</Link>
+                            </li>
+                            <li>
                                 <Link to="/cuentas" className="hover:text-gray-300">Cuentas Contables</Link>
                             </li>
                             <li>
@@ -27,6 +30,9 @@ function Home() {
                             </li>
                             <li>
                                 <Link to="/auditoria" className="hover:text-gray-300">Auditoría</Link>
+                            </li>
+                            <li>
+                                <Link to="/mayor" className="hover:text-gray-300">Libro Mayor</Link>
                             </li>
                         </ul>
                     </nav>

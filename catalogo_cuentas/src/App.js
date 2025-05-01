@@ -7,6 +7,8 @@ import JerarquiaCuentas from "./pages/Jerarquia";
 import EstadosFinancieros from "./pages/EstadosCuentas";
 import Impuestos from "./pages/Impuestos";
 import AuditoriaCuentas from "./pages/Auditorias";
+import Asientos from "./pages/Asientos";
+import LibroMayor from "./pages/LibroMayor";
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
         <Route path="/estado-financiero" element={<EstadosFinancieros />} />
         <Route path="/impuestos" element={<Impuestos />} />
         <Route path="/auditoria" element={<AuditoriaCuentas />} />
+        <Route path="/asientos" element={<Asientos />} />
+        <Route path="/mayor" element={<LibroMayor />} />
       </Routes>
     </Router>
   );

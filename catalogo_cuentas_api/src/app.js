@@ -7,6 +7,8 @@ const jerarquiaRoutes = require('./routes/jerarquiaRoutes');
 const estadosRoutes = require('./routes/estadosRoutes');
 const impuestosRoutes = require('./routes/impuestosRoutes');
 const auditoriasRoutes = require('./routes/auditoriasRoutes');
+const asientosRoutes = require('./routes/asientosRoutes');
+const libroMayorRoutes = require('./routes/libroMayorRoutes');
 
 const app = express();
 app.use(express.json());
@@ -14,7 +16,17 @@ app.use(cors());
 
 connectDB();
 
-app.use('/api', [cuentaRoutes, gruposRoutes, jerarquiaRoutes, estadosRoutes, impuestosRoutes, auditoriasRoutes]);
+app.use('/api', [
+    cuentaRoutes, 
+    gruposRoutes, 
+    jerarquiaRoutes, 
+    estadosRoutes, 
+    impuestosRoutes, 
+    auditoriasRoutes, 
+    asientosRoutes, 
+    libroMayorRoutes
+    ]
+);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
